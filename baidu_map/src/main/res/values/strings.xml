@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">Baidu_Map</string>
+    <string name="title">百度地图Demo</string>
+    <string name="common_map">普通地图</string>
+    <string name="satellite_map">卫星地图</string>
+    <string name="empty_map">空白地图</string>
+    <string name="traffic_map">实时交通图</string>
+    <string name="hot_map">百度城市热力图</string>
+    <string name="central_map">map设置中心点</string>
+    <string name="marker_map">标记覆盖物</string>
+    <string name="text_option">文字覆盖物</string>
+    <string name="city_search">城市兴趣点搜索</string>
+    <string name="range_search">范围搜索</string>
+    <string name="nearby_search">附近搜索</string>
+    <string name="busLine_search">公交路线查询</string>
+</resources>

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.baidu_map.NearbySearchMap">
+
+    <LinearLayout
+        android:id="@+id/nearby_search_ll_one"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/nearby_search_et"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="4"
+            android:text="亳州" />
+
+        <EditText
+            android:id="@+id/restaurant_nearby_search_et"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="4"
+            android:text="餐厅"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/nearby_search_ll_two"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/nearby_search_ll_one"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/nearby_search_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="4"
+            android:text="搜索"
+            />
+
+        <Button
+            android:id="@+id/nearby_next_page_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="4"
+            android:text="下一页"/>
+
+    </LinearLayout>
+
+
+    <com.baidu.mapapi.map.MapView
+        android:id="@+id/nearby_search_mapView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/nearby_search_ll_two"/>
+
+
+</RelativeLayout>
