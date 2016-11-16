@@ -119,13 +119,13 @@ public class BusLineSearchMap extends AppCompatActivity implements View.OnClickL
         switch (view.getId()) {
             case R.id.busLine_search_button:
                 //开始搜索
-                currentStation = 0;
                 searchInCity(cityName, busLineNum);
+                currentStation = 0;
                 break;
 
             case R.id.busLine_next_page:
                 //上一站
-
+                upStation();
                 break;
 
             case R.id.busLine_next_page_two:
@@ -136,21 +136,21 @@ public class BusLineSearchMap extends AppCompatActivity implements View.OnClickL
     }
 
     /**
-     * 下一站
+     * 上一站
      */
     private int currentStation = 0;
 
-    private void nextStation() {
+    private void upStation() {
         int size = busLineResult.getStations().size();
-        if (currentStation == 0){
+//        if (currentStation == size) {
+//            Toast.makeText(BusLineSearchMap.this, "已到达终点站", Toast.LENGTH_SHORT).show();
+//        }
+        if (currentStation == 0) {
             Toast.makeText(BusLineSearchMap.this, "始发站", Toast.LENGTH_SHORT).show();
-
-        }
-        if (currentStation >= size) {
-            Toast.makeText(BusLineSearchMap.this, "已到达终点站", Toast.LENGTH_SHORT).show();
-            currentStation = 0;
-            return;
+            currentStation = size;
+//            return;
         } else {
+            currentStation--;
             BusLineResult.BusStation busStation = busLineResult.getStations().get(currentStation);
             //移动到指定索引的坐标
             mBaiDuMap.setMapStatus(MapStatusUpdateFactory.newLatLng(busStation.getLocation()));
@@ -160,7 +160,38 @@ public class BusLineSearchMap extends AppCompatActivity implements View.OnClickL
             //弹出泡泡
             popupText.setText(busStation.getTitle());
             mBaiDuMap.showInfoWindow(new InfoWindow(popupText, busStation.getLocation(), 0));
+
+
+        }
+
+    }
+
+
+    /**
+     * 下一站
+     */
+    private void nextStation() {
+        int size = busLineResult.getStations().size();
+        if (currentStation == 0) {
+            Toast.makeText(BusLineSearchMap.this, "始发站", Toast.LENGTH_SHORT).show();
+
+        }
+        if (currentStation == size-1) {
+            Toast.makeText(BusLineSearchMap.this, "已到达终点站", Toast.LENGTH_SHORT).show();
+            currentStation = 0;
+            //return;
+        } else {
             currentStation++;
+            BusLineResult.BusStation busStation = busLineResult.getStations().get(currentStation);
+            //移动到指定索引的坐标
+            mBaiDuMap.setMapStatus(MapStatusUpdateFactory.newLatLng(busStation.getLocation()));
+            //设置弹出框
+            TextView popupText = new TextView(this);
+            popupText.setBackgroundResource(R.drawable.popup);
+            //弹出泡泡
+            popupText.setText(busStation.getTitle());
+            mBaiDuMap.showInfoWindow(new InfoWindow(popupText, busStation.getLocation(), 0));
+
 
         }
 
