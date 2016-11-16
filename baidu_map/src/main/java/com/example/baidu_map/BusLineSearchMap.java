@@ -6,9 +6,11 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.baidu.mapapi.map.BaiduMap;
+import com.baidu.mapapi.map.InfoWindow;
 import com.baidu.mapapi.map.MapStatus;
 import com.baidu.mapapi.map.MapStatusUpdate;
 import com.baidu.mapapi.map.MapStatusUpdateFactory;
@@ -111,11 +113,13 @@ public class BusLineSearchMap extends AppCompatActivity implements View.OnClickL
 
     @Override
     public void onClick(View view) {
+        //获取EditText
         cityName = mBusLineCity.getText().toString();
         busLineNum = mBusLineNumber.getText().toString();
         switch (view.getId()) {
             case R.id.busLine_search_button:
                 //开始搜索
+                currentStation = 0;
                 searchInCity(cityName, busLineNum);
                 break;
 
@@ -126,7 +130,6 @@ public class BusLineSearchMap extends AppCompatActivity implements View.OnClickL
 
             case R.id.busLine_next_page_two:
                 //下一站
-
                 nextStation();
                 break;
         }
@@ -136,7 +139,26 @@ public class BusLineSearchMap extends AppCompatActivity implements View.OnClickL
      * 下一站
      */
     private int currentStation = 0;
+
     private void nextStation() {
+        int size = busLineResult.getStations().size();
+        if (currentStation >= size) {
+            Toast.makeText(BusLineSearchMap.this, "已到达终点站", Toast.LENGTH_SHORT).show();
+            currentStation = 0;
+            return;
+        } else {
+            BusLineResult.BusStation busStation = busLineResult.getStations().get(currentStation);
+            //移动到指定索引的坐标
+            mBaiDuMap.setMapStatus(MapStatusUpdateFactory.newLatLng(busStation.getLocation()));
+            //设置弹出框
+            TextView popupText = new TextView(this);
+            popupText.setBackgroundResource(R.drawable.popup);
+            //弹出泡泡
+            popupText.setText(busStation.getTitle());
+            mBaiDuMap.showInfoWindow(new InfoWindow(popupText, busStation.getLocation(), 0));
+            currentStation++;
+
+        }
 
     }
 
@@ -189,6 +211,7 @@ public class BusLineSearchMap extends AppCompatActivity implements View.OnClickL
             busLineOverlay.addToMap();
             busLineOverlay.zoomToSpan();
         }
+
 
     }
 
