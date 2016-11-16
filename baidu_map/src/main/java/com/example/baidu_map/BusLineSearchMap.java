@@ -142,6 +142,10 @@ public class BusLineSearchMap extends AppCompatActivity implements View.OnClickL
 
     private void nextStation() {
         int size = busLineResult.getStations().size();
+        if (currentStation == 0){
+            Toast.makeText(BusLineSearchMap.this, "始发站", Toast.LENGTH_SHORT).show();
+
+        }
         if (currentStation >= size) {
             Toast.makeText(BusLineSearchMap.this, "已到达终点站", Toast.LENGTH_SHORT).show();
             currentStation = 0;
