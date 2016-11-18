@@ -120,7 +120,7 @@ public class BusLineSearchMap extends AppCompatActivity implements View.OnClickL
             case R.id.busLine_search_button:
                 //开始搜索
                 searchInCity(cityName, busLineNum);
-                currentStation = 0;
+                currentStation = -1;
                 break;
 
             case R.id.busLine_next_page:
@@ -138,16 +138,17 @@ public class BusLineSearchMap extends AppCompatActivity implements View.OnClickL
     /**
      * 上一站
      */
-    private int currentStation = 0;
+    private int currentStation = -1;
 
     private void upStation() {
         int size = busLineResult.getStations().size();
-//        if (currentStation == size) {
-//            Toast.makeText(BusLineSearchMap.this, "已到达终点站", Toast.LENGTH_SHORT).show();
-//        }
+        if (currentStation == size) {
+            Toast.makeText(BusLineSearchMap.this, "已到达终点站", Toast.LENGTH_SHORT).show();
+//            currentStation = -1;
+        }
         if (currentStation == 0) {
             Toast.makeText(BusLineSearchMap.this, "始发站", Toast.LENGTH_SHORT).show();
-            currentStation = size;
+            //currentStation = size;
 //            return;
         } else {
             currentStation--;
@@ -160,8 +161,6 @@ public class BusLineSearchMap extends AppCompatActivity implements View.OnClickL
             //弹出泡泡
             popupText.setText(busStation.getTitle());
             mBaiDuMap.showInfoWindow(new InfoWindow(popupText, busStation.getLocation(), 0));
-
-
         }
 
     }
@@ -172,13 +171,13 @@ public class BusLineSearchMap extends AppCompatActivity implements View.OnClickL
      */
     private void nextStation() {
         int size = busLineResult.getStations().size();
-        if (currentStation == 0) {
+        if (currentStation == -1) {
             Toast.makeText(BusLineSearchMap.this, "始发站", Toast.LENGTH_SHORT).show();
 
         }
-        if (currentStation == size-1) {
+        if (currentStation == size - 1) {
             Toast.makeText(BusLineSearchMap.this, "已到达终点站", Toast.LENGTH_SHORT).show();
-            currentStation = 0;
+            //currentStation = -1;
             //return;
         } else {
             currentStation++;
