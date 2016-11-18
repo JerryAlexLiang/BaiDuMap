@@ -324,5 +324,11 @@ public class BusLineSearchMap extends AppCompatActivity implements View.OnClickL
         if (mBusLineMap != null) {
             mBusLineMap.onDestroy();
         }
+        if (mPoiSearch != null) {
+            mPoiSearch.destroy();
+        }
+        if (mBusLineSearch != null) {
+            mBusLineSearch.destroy();
+        }
     }
 }
