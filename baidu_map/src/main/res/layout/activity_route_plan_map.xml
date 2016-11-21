@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.baidu_map.RoutePlanMap">
+
+    <TextView
+        android:id="@+id/start_point"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="起点： "
+        android:padding="8dp"
+        android:textSize="20sp"/>
+
+    <EditText
+        android:id="@+id/start_point_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/start_point"
+        android:layout_alignBaseline="@id/start_point"
+        android:background="@android:drawable/editbox_background_normal"
+        android:text="亳州一中"/>
+
+    <TextView
+        android:id="@+id/end_point"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="终点： "
+        android:padding="8dp"
+        android:textSize="20sp"
+        android:layout_below="@id/start_point"/>
+
+    <EditText
+        android:id="@+id/end_point_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/end_point"
+        android:layout_alignBaseline="@id/end_point"
+        android:background="@android:drawable/editbox_background_normal"
+        android:text="万达广场"/>
+
+    <LinearLayout
+        android:id="@+id/button_ll"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_below="@id/end_point">
+
+        <Button
+            android:id="@+id/route_driver_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="驾车"
+            />
+
+    </LinearLayout>
+
+    <com.baidu.mapapi.map.MapView
+        android:id="@+id/route_map_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/button_ll">
+
+    </com.baidu.mapapi.map.MapView>
+
+
+</RelativeLayout>
