@@ -41,7 +41,8 @@
         <activity android:name=".CitySearchMap" />
         <activity android:name=".RangeSearchMap" />
         <activity android:name=".NearbySearchMap" />
-        <activity android:name=".BusLineSearchMap"></activity>
+        <activity android:name=".BusLineSearchMap" />
+        <activity android:name=".RoutePlanMap"></activity>
     </application>
 
 </manifest>

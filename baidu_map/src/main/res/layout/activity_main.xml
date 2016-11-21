@@ -95,6 +95,14 @@
                 android:layout_height="wrap_content"
                 android:text="@string/busLine_search"/>
 
+            <Button
+                android:id="@+id/route_plan_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/route_plan"/>
+
+
+
         </LinearLayout>
 
     </ScrollView>

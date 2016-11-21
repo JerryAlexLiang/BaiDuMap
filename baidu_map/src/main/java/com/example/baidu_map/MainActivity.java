@@ -27,6 +27,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Button mRangeSearchBtn;
     private Button mNearbySearchBtn;
     private Button mBusLineSearchBtn;
+    private Button mRoutePlanBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +46,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mRangeSearchBtn = (Button) findViewById(R.id.range_search_btn);
         mNearbySearchBtn = (Button) findViewById(R.id.nearby_search_btn);
         mBusLineSearchBtn = (Button) findViewById(R.id.busLine_search_btn);
+        mRoutePlanBtn = (Button) findViewById(R.id.route_plan_btn);
         //设置点击监听事件
         commonMap.setOnClickListener(this);
         satelliteMap.setOnClickListener(this);
@@ -58,6 +60,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mRangeSearchBtn.setOnClickListener(this);
         mNearbySearchBtn.setOnClickListener(this);
         mBusLineSearchBtn.setOnClickListener(this);
+        mRoutePlanBtn.setOnClickListener(this);
     }
 
 
@@ -127,6 +130,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.busLine_search_btn:
                 Intent intent11 = new Intent(MainActivity.this,BusLineSearchMap.class);
                 startActivity(intent11);
+                break;
+
+            case R.id.route_plan_btn:
+                Intent intent12 = new Intent(MainActivity.this,RoutePlanMap.class);
+                startActivity(intent12);
                 break;
 
 
