@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.map.MapStatus;
@@ -12,7 +14,12 @@ import com.baidu.mapapi.map.MapStatusUpdate;
 import com.baidu.mapapi.map.MapStatusUpdateFactory;
 import com.baidu.mapapi.map.MapView;
 import com.baidu.mapapi.model.LatLng;
+import com.baidu.mapapi.overlayutil.DrivingRouteOverlay;
+import com.baidu.mapapi.overlayutil.TransitRouteOverlay;
+import com.baidu.mapapi.search.core.PlaneInfo;
 import com.baidu.mapapi.search.core.RouteNode;
+import com.baidu.mapapi.search.core.SearchResult;
+import com.baidu.mapapi.search.core.TaxiInfo;
 import com.baidu.mapapi.search.route.BikingRouteResult;
 import com.baidu.mapapi.search.route.DrivingRouteLine;
 import com.baidu.mapapi.search.route.DrivingRoutePlanOption;
@@ -22,6 +29,7 @@ import com.baidu.mapapi.search.route.MassTransitRouteResult;
 import com.baidu.mapapi.search.route.OnGetRoutePlanResultListener;
 import com.baidu.mapapi.search.route.PlanNode;
 import com.baidu.mapapi.search.route.RoutePlanSearch;
+import com.baidu.mapapi.search.route.SuggestAddrInfo;
 import com.baidu.mapapi.search.route.TransitRouteResult;
 import com.baidu.mapapi.search.route.WalkingRouteResult;
 
@@ -40,6 +48,9 @@ public class RoutePlanMap extends AppCompatActivity implements View.OnClickListe
     //路线规划搜索相关
     private RoutePlanSearch mRoutePlanSearch;
 
+    //声明驾车的覆盖物
+    private DrivingRouteOverlay mDrivingRouteOverlay;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,11 +67,12 @@ public class RoutePlanMap extends AppCompatActivity implements View.OnClickListe
         setCenter();
         //实例化路径规划对象mRoutePlanSearch
         mRoutePlanSearch = RoutePlanSearch.newInstance();
-        //设置点击监听事件
-        mDriverRouteBtn.setOnClickListener(this);
         //监听结果返回接口对象
         mRoutePlanSearch.setOnGetRoutePlanResultListener(this);
-
+        //实例化覆盖物
+        mDrivingRouteOverlay = new DrivingRouteOverlay(mBaiDuMap);
+        //设置点击监听事件
+        mDriverRouteBtn.setOnClickListener(this);
 
     }
 
@@ -73,7 +85,6 @@ public class RoutePlanMap extends AppCompatActivity implements View.OnClickListe
     public void onClick(View view) {
         mStartPoint = mEtStart.getText().toString();
         mEndPoint = mEtEnd.getText().toString();
-
         switch (view.getId()) {
             case R.id.route_driver_btn:
                 driver();
@@ -86,11 +97,17 @@ public class RoutePlanMap extends AppCompatActivity implements View.OnClickListe
      * 驾车
      */
     private void driver() {
-        PlanNode startNode = PlanNode.withCityNameAndPlaceName("武汉", mStartPoint);//开始节点
-        PlanNode endNode = PlanNode.withCityNameAndPlaceName("武汉", mEndPoint);//结束节点
+
+//        PlanNode startNode = PlanNode.withCityNameAndPlaceName("亳州", mStartPoint);//开始节点
+//        PlanNode endNode = PlanNode.withCityNameAndPlaceName("亳州", mEndPoint);//结束节点
+        PlanNode startNode = PlanNode.withLocation(new LatLng(33.83145, 115.786992));//万达广场
+        PlanNode endNode = PlanNode.withLocation(new LatLng(33.894828,115.779495));//风华中学
+
+
         DrivingRoutePlanOption drivingRoutePlanOption = new DrivingRoutePlanOption()
                 .from(startNode)
                 .to(endNode);
+
         mRoutePlanSearch.drivingSearch(drivingRoutePlanOption);
 
     }
@@ -107,7 +124,6 @@ public class RoutePlanMap extends AppCompatActivity implements View.OnClickListe
 
     /**
      * 接口回调事件
-     * @param walkingRouteResult
      */
 
     /**
@@ -145,14 +161,16 @@ public class RoutePlanMap extends AppCompatActivity implements View.OnClickListe
      */
     @Override
     public void onGetDrivingRouteResult(DrivingRouteResult drivingRouteResult) {
-        List<DrivingRouteLine> routeLines = drivingRouteResult.getRouteLines();
-        for (DrivingRouteLine routeLine : routeLines){
-            System.out.println("====> " + routeLine.getDistance() + " " + routeLine.getDuration() + " " + routeLine.getStarting().getTitle()
-                    + " " + routeLine.getTerminal().getTitle());
-        }
-
-
-
+       if (drivingRouteResult!=null){
+           List<DrivingRouteLine> routeLines = drivingRouteResult.getRouteLines();
+           if (routeLines.size()>0){
+               mBaiDuMap.clear();//清空所有Marker
+               mDrivingRouteOverlay.setData(routeLines.get(0));
+               mDrivingRouteOverlay.addToMap();
+               mDrivingRouteOverlay.zoomToSpan();//自动缩放地图
+               Toast.makeText(RoutePlanMap.this, "总路线:" + routeLines.size(), Toast.LENGTH_SHORT).show();
+           }
+       }
     }
 
     @Override
