@@ -168,9 +168,20 @@ public class RoutePlanMap extends AppCompatActivity implements View.OnClickListe
                mDrivingRouteOverlay.setData(routeLines.get(0));
                mDrivingRouteOverlay.addToMap();
                mDrivingRouteOverlay.zoomToSpan();//自动缩放地图
-               Toast.makeText(RoutePlanMap.this, "总路线:" + routeLines.size(), Toast.LENGTH_SHORT).show();
+
+               DrivingRouteLine line = routeLines.get(0);
+               //返回路径上所有的折点
+               List<DrivingRouteLine.DrivingStep> allStep = line.getAllStep();
+               if (allStep!=null){
+                   for (DrivingRouteLine.DrivingStep drivingStep : allStep) {
+                       System.out.println("====>  " + drivingStep.getExitInstructions() + drivingStep.getInstructions());
+                   }
+               }
+
+
            }
        }
+
     }
 
     @Override
