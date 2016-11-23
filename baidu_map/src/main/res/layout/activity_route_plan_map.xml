@@ -9,50 +9,79 @@
         android:id="@+id/start_point"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="起点： "
         android:padding="8dp"
-        android:textSize="20sp"/>
+        android:text="起点： "
+        android:textSize="20sp" />
 
     <EditText
         android:id="@+id/start_point_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/start_point"
         android:layout_alignBaseline="@id/start_point"
+        android:layout_toRightOf="@id/start_point"
         android:background="@android:drawable/editbox_background_normal"
-        android:text="亳州一中"/>
+        android:hint="亳州一中" />
 
     <TextView
         android:id="@+id/end_point"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="终点： "
+        android:layout_below="@id/start_point"
         android:padding="8dp"
-        android:textSize="20sp"
-        android:layout_below="@id/start_point"/>
+        android:text="终点： "
+        android:textSize="20sp" />
 
     <EditText
         android:id="@+id/end_point_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/end_point"
         android:layout_alignBaseline="@id/end_point"
+        android:layout_toRightOf="@id/end_point"
         android:background="@android:drawable/editbox_background_normal"
-        android:text="万达广场"/>
+        android:hint="万达广场" />
+
+    <TextView
+        android:id="@+id/city"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@id/end_point_name"
+        android:layout_toRightOf="@id/end_point_name"
+        android:text="城市:"
+        android:textSize="20sp" />
+
+    <EditText
+        android:id="@+id/city_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@id/city"
+        android:layout_toRightOf="@id/city"
+        android:background="@android:drawable/editbox_background_normal"
+        android:hint="亳州" />
 
     <LinearLayout
         android:id="@+id/button_ll"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_below="@id/end_point">
+        android:layout_below="@id/end_point"
+        android:orientation="horizontal">
 
         <Button
             android:id="@+id/route_driver_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="驾车"
-            />
+            android:text="驾车" />
+
+        <Button
+            android:id="@+id/route_driver_btn_up"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="上一个节点" />
+
+        <Button
+            android:id="@+id/route_driver_btn_next"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="下一个节点" />
 
     </LinearLayout>
 

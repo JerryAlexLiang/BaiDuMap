@@ -6,9 +6,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.baidu.mapapi.map.BaiduMap;
+import com.baidu.mapapi.map.InfoWindow;
 import com.baidu.mapapi.map.MapStatus;
 import com.baidu.mapapi.map.MapStatusUpdate;
 import com.baidu.mapapi.map.MapStatusUpdateFactory;
@@ -50,15 +52,25 @@ public class RoutePlanMap extends AppCompatActivity implements View.OnClickListe
 
     //声明驾车的覆盖物
     private DrivingRouteOverlay mDrivingRouteOverlay;
+    private EditText mRouteCityName;
+    private String mCity;
+
+    //所有节点信息
+    private List<DrivingRouteLine.DrivingStep> allStep;
+    private Button mUP;
+    private Button mNext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_route_plan_map);
         //初始化控件
+        mRouteCityName = (EditText) findViewById(R.id.city_name);
         mEtStart = (EditText) findViewById(R.id.start_point_name);
         mEtEnd = (EditText) findViewById(R.id.end_point_name);
         mDriverRouteBtn = (Button) findViewById(R.id.route_driver_btn);
+        mUP = (Button) findViewById(R.id.route_driver_btn_up);//上一节点
+        mNext = (Button) findViewById(R.id.route_driver_btn_next);//下一节点
         //初始化mapView
         mRouteMap = (MapView) findViewById(R.id.route_map_view);
         //得到BaiDuMap
@@ -69,10 +81,13 @@ public class RoutePlanMap extends AppCompatActivity implements View.OnClickListe
         mRoutePlanSearch = RoutePlanSearch.newInstance();
         //监听结果返回接口对象
         mRoutePlanSearch.setOnGetRoutePlanResultListener(this);
+
         //实例化覆盖物
         mDrivingRouteOverlay = new DrivingRouteOverlay(mBaiDuMap);
         //设置点击监听事件
         mDriverRouteBtn.setOnClickListener(this);
+        mUP.setOnClickListener(this);
+        mNext.setOnClickListener(this);
 
     }
 
@@ -83,13 +98,58 @@ public class RoutePlanMap extends AppCompatActivity implements View.OnClickListe
      */
     @Override
     public void onClick(View view) {
+        mCity = mRouteCityName.getText().toString();
         mStartPoint = mEtStart.getText().toString();
         mEndPoint = mEtEnd.getText().toString();
+
         switch (view.getId()) {
             case R.id.route_driver_btn:
                 driver();
+
+            case R.id.route_driver_btn_up:
+                //上一节点
+                up();
+                break;
+
+            case R.id.route_driver_btn_next:
+                //下一节点
+                next();
                 break;
         }
+
+    }
+
+    private int currentStep = 1;
+
+    /**
+     * 下一个节点
+     */
+    private void next() {
+        if (allStep != null) {
+
+            if (currentStep < allStep.size()) {
+                currentStep++;
+                DrivingRouteLine.DrivingStep drivingStep = allStep.get(currentStep);
+                LatLng location = drivingStep.getEntrance().getLocation();
+                TextView popupTextView = new TextView(this);
+                popupTextView.setBackgroundResource(R.drawable.popup);
+                popupTextView.setText(drivingStep.getExitInstructions());
+                mBaiDuMap.showInfoWindow(new InfoWindow(popupTextView, location, 0));
+                //移动节点至中心
+                mBaiDuMap.setMapStatus(MapStatusUpdateFactory.newLatLng(location));
+
+            } else {
+                Toast.makeText(RoutePlanMap.this, "已到达目标地点", Toast.LENGTH_SHORT).show();
+            }
+
+        }
+
+    }
+
+    /**
+     * 上一个节点
+     */
+    private void up() {
 
     }
 
@@ -98,17 +158,18 @@ public class RoutePlanMap extends AppCompatActivity implements View.OnClickListe
      */
     private void driver() {
 
-//        PlanNode startNode = PlanNode.withCityNameAndPlaceName("亳州", mStartPoint);//开始节点
-//        PlanNode endNode = PlanNode.withCityNameAndPlaceName("亳州", mEndPoint);//结束节点
-        PlanNode startNode = PlanNode.withLocation(new LatLng(33.83145, 115.786992));//万达广场
-        PlanNode endNode = PlanNode.withLocation(new LatLng(33.894828,115.779495));//风华中学
+//        PlanNode startNode = PlanNode.withCityNameAndPlaceName(mCity, mStartPoint);//开始节点
+//        PlanNode endNode = PlanNode.withCityNameAndPlaceName(mCity, mEndPoint);//结束节点
 
+        PlanNode startNode = PlanNode.withLocation(new LatLng(33.83145, 115.786992));//万达广场
+        PlanNode endNode = PlanNode.withLocation(new LatLng(33.894828, 115.779495));//风华中学
 
         DrivingRoutePlanOption drivingRoutePlanOption = new DrivingRoutePlanOption()
                 .from(startNode)
                 .to(endNode);
 
-        mRoutePlanSearch.drivingSearch(drivingRoutePlanOption);
+        mRoutePlanSearch.drivingSearch(drivingRoutePlanOption);// 发起驾车路线规划
+
 
     }
 
@@ -161,26 +222,27 @@ public class RoutePlanMap extends AppCompatActivity implements View.OnClickListe
      */
     @Override
     public void onGetDrivingRouteResult(DrivingRouteResult drivingRouteResult) {
-       if (drivingRouteResult!=null){
-           List<DrivingRouteLine> routeLines = drivingRouteResult.getRouteLines();
-           if (routeLines.size()>0){
-               mBaiDuMap.clear();//清空所有Marker
-               mDrivingRouteOverlay.setData(routeLines.get(0));
-               mDrivingRouteOverlay.addToMap();
-               mDrivingRouteOverlay.zoomToSpan();//自动缩放地图
+        if (drivingRouteResult != null) {
+            List<DrivingRouteLine> routeLines = drivingRouteResult.getRouteLines();
+            if (routeLines.size() > 0) {
+                mBaiDuMap.clear();//清空所有Marker
+                mDrivingRouteOverlay.setData(routeLines.get(0));
+                mDrivingRouteOverlay.addToMap();
+                mDrivingRouteOverlay.zoomToSpan();//自动缩放地图
 
-               DrivingRouteLine line = routeLines.get(0);
-               //返回路径上所有的折点
-               List<DrivingRouteLine.DrivingStep> allStep = line.getAllStep();
-               if (allStep!=null){
-                   for (DrivingRouteLine.DrivingStep drivingStep : allStep) {
-                       System.out.println("====>  " + drivingStep.getExitInstructions() + drivingStep.getInstructions());
-                   }
-               }
+                //测试：万达广场---亳州一中
+                DrivingRouteLine line = routeLines.get(0);
+                //返回路径上所有的折点
+                allStep = line.getAllStep();
+                if (allStep != null) {
+                    for (DrivingRouteLine.DrivingStep drivingStep : allStep) {
+                        System.out.println("====>  " + drivingStep.getExitInstructions());
+                    }
+                }
 
 
-           }
-       }
+            }
+        }
 
     }
 
