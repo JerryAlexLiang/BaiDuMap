@@ -105,6 +105,7 @@ public class RoutePlanMap extends AppCompatActivity implements View.OnClickListe
         switch (view.getId()) {
             case R.id.route_driver_btn:
                 mBaiDuMap.clear();//清空所有Marker
+                currentStep = -1;
                 driver();
 
             case R.id.route_driver_btn_up:
