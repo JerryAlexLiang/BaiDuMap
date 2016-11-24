@@ -82,7 +82,7 @@ public class RoutePlanMap extends AppCompatActivity implements View.OnClickListe
         //监听结果返回接口对象
         mRoutePlanSearch.setOnGetRoutePlanResultListener(this);
 
-        //实例化覆盖物
+        //创建公交路线规划线路覆盖物   实例化覆盖物
         mDrivingRouteOverlay = new DrivingRouteOverlay(mBaiDuMap);
         //设置点击监听事件
         mDriverRouteBtn.setOnClickListener(this);
@@ -104,6 +104,7 @@ public class RoutePlanMap extends AppCompatActivity implements View.OnClickListe
 
         switch (view.getId()) {
             case R.id.route_driver_btn:
+                mBaiDuMap.clear();//清空所有Marker
                 driver();
 
             case R.id.route_driver_btn_up:
@@ -126,23 +127,20 @@ public class RoutePlanMap extends AppCompatActivity implements View.OnClickListe
      */
     private void next() {
         if (allStep != null) {
-
-            if (currentStep <= allStep.size()) {
-
-                DrivingRouteLine.DrivingStep drivingStep = allStep.get(currentStep+1);
+            if (currentStep == allStep.size() - 1) {
+                Toast.makeText(RoutePlanMap.this, "已到达目标地点", Toast.LENGTH_SHORT).show();
+            } else {
+                DrivingRouteLine.DrivingStep drivingStep = allStep.get(currentStep + 1);
 //                LatLng location = drivingStep.getEntrance().getLocation();
                 LatLng location = drivingStep.getExit().getLocation();
                 TextView popupTextView = new TextView(this);
                 popupTextView.setBackgroundResource(R.drawable.popup);
                 popupTextView.setText(drivingStep.getInstructions());
                 mBaiDuMap.showInfoWindow(new InfoWindow(popupTextView, location, 0));
-                mDrivingRouteOverlay.zoomToSpan();//自动缩放地图
+                //mDrivingRouteOverlay.zoomToSpan();//自动缩放地图
                 //移动节点至中心
                 mBaiDuMap.setMapStatus(MapStatusUpdateFactory.newLatLng(location));
                 currentStep++;
-            } else {
-                Toast.makeText(RoutePlanMap.this, "已到达目标地点", Toast.LENGTH_SHORT).show();
-                currentStep=allStep.size();
             }
 
         }
@@ -161,18 +159,20 @@ public class RoutePlanMap extends AppCompatActivity implements View.OnClickListe
      */
     private void driver() {
 
-//        PlanNode startNode = PlanNode.withCityNameAndPlaceName(mCity, mStartPoint);//开始节点
-//        PlanNode endNode = PlanNode.withCityNameAndPlaceName(mCity, mEndPoint);//结束节点
+        PlanNode startNode = PlanNode.withCityNameAndPlaceName(mCity, mStartPoint);//开始节点
+        PlanNode endNode = PlanNode.withCityNameAndPlaceName(mCity, mEndPoint);//结束节点
 
-        PlanNode startNode = PlanNode.withLocation(new LatLng(33.83145, 115.786992));//万达广场
-        PlanNode endNode = PlanNode.withLocation(new LatLng(33.894828, 115.779495));//风华中学
+//        PlanNode startNode = PlanNode.withLocation(new LatLng(33.83145, 115.786992));//万达广场
+//        PlanNode endNode = PlanNode.withLocation(new LatLng(33.894828, 115.779495));//风华中学
+        if (mStartPoint.isEmpty() || mEndPoint.isEmpty() ||mCity.isEmpty()){
+            Toast.makeText(RoutePlanMap.this, "请输入查询信息", Toast.LENGTH_SHORT).show();
+        }else {
+            DrivingRoutePlanOption drivingRoutePlanOption = new DrivingRoutePlanOption()
+                    .from(startNode)
+                    .to(endNode);
 
-        DrivingRoutePlanOption drivingRoutePlanOption = new DrivingRoutePlanOption()
-                .from(startNode)
-                .to(endNode);
-
-        mRoutePlanSearch.drivingSearch(drivingRoutePlanOption);// 发起驾车路线规划
-
+            mRoutePlanSearch.drivingSearch(drivingRoutePlanOption);// 发起驾车路线规划
+        }
 
     }
 
@@ -181,7 +181,7 @@ public class RoutePlanMap extends AppCompatActivity implements View.OnClickListe
      */
     private void setCenter() {
         LatLng centrolPoint = new LatLng(33.83146, 115.786975);
-        MapStatus mapStatus = new MapStatus.Builder().target(centrolPoint).zoom(22).build();
+        MapStatus mapStatus = new MapStatus.Builder().target(centrolPoint).zoom(18).build();
         MapStatusUpdate mapStatusUpdate = MapStatusUpdateFactory.newMapStatus(mapStatus);
         mBaiDuMap.setMapStatus(mapStatusUpdate);
     }
@@ -225,11 +225,24 @@ public class RoutePlanMap extends AppCompatActivity implements View.OnClickListe
      */
     @Override
     public void onGetDrivingRouteResult(DrivingRouteResult drivingRouteResult) {
-        if (drivingRouteResult != null) {
+        if (drivingRouteResult == null || drivingRouteResult.error != SearchResult.ERRORNO.NO_ERROR) {
+            //未找到结果
+            Toast.makeText(RoutePlanMap.this, "未找到结果", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (drivingRouteResult.error == SearchResult.ERRORNO.AMBIGUOUS_ROURE_ADDR) {
+            //起终点或途经点地址有岐义，通过以下接口获取建议查询信息
+            //result.getSuggestAddrInfo()
+            Toast.makeText(RoutePlanMap.this, "起终点或途经点地址有岐义", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (drivingRouteResult != null && drivingRouteResult.error == SearchResult.ERRORNO.NO_ERROR) {
             List<DrivingRouteLine> routeLines = drivingRouteResult.getRouteLines();
             if (routeLines.size() > 0) {
-                mBaiDuMap.clear();//清空所有Marker
+//                mBaiDuMap.clear();//清空所有Marker
+                //设置公交路线规划数据
                 mDrivingRouteOverlay.setData(routeLines.get(0));
+                //将公交路线规划覆盖物添加到地图中
                 mDrivingRouteOverlay.addToMap();
                 mDrivingRouteOverlay.zoomToSpan();//自动缩放地图
 
