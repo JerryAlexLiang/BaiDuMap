@@ -119,7 +119,7 @@ public class RoutePlanMap extends AppCompatActivity implements View.OnClickListe
 
     }
 
-    private int currentStep = 1;
+    private int currentStep = -1;
 
     /**
      * 下一个节点
@@ -127,19 +127,22 @@ public class RoutePlanMap extends AppCompatActivity implements View.OnClickListe
     private void next() {
         if (allStep != null) {
 
-            if (currentStep < allStep.size()) {
-                currentStep++;
-                DrivingRouteLine.DrivingStep drivingStep = allStep.get(currentStep);
-                LatLng location = drivingStep.getEntrance().getLocation();
+            if (currentStep <= allStep.size()) {
+
+                DrivingRouteLine.DrivingStep drivingStep = allStep.get(currentStep+1);
+//                LatLng location = drivingStep.getEntrance().getLocation();
+                LatLng location = drivingStep.getExit().getLocation();
                 TextView popupTextView = new TextView(this);
                 popupTextView.setBackgroundResource(R.drawable.popup);
-                popupTextView.setText(drivingStep.getExitInstructions());
+                popupTextView.setText(drivingStep.getInstructions());
                 mBaiDuMap.showInfoWindow(new InfoWindow(popupTextView, location, 0));
+                mDrivingRouteOverlay.zoomToSpan();//自动缩放地图
                 //移动节点至中心
                 mBaiDuMap.setMapStatus(MapStatusUpdateFactory.newLatLng(location));
-
+                currentStep++;
             } else {
                 Toast.makeText(RoutePlanMap.this, "已到达目标地点", Toast.LENGTH_SHORT).show();
+                currentStep=allStep.size();
             }
 
         }
@@ -178,7 +181,7 @@ public class RoutePlanMap extends AppCompatActivity implements View.OnClickListe
      */
     private void setCenter() {
         LatLng centrolPoint = new LatLng(33.83146, 115.786975);
-        MapStatus mapStatus = new MapStatus.Builder().target(centrolPoint).zoom(15).build();
+        MapStatus mapStatus = new MapStatus.Builder().target(centrolPoint).zoom(22).build();
         MapStatusUpdate mapStatusUpdate = MapStatusUpdateFactory.newMapStatus(mapStatus);
         mBaiDuMap.setMapStatus(mapStatusUpdate);
     }
@@ -236,7 +239,7 @@ public class RoutePlanMap extends AppCompatActivity implements View.OnClickListe
                 allStep = line.getAllStep();
                 if (allStep != null) {
                     for (DrivingRouteLine.DrivingStep drivingStep : allStep) {
-                        System.out.println("====>  " + drivingStep.getExitInstructions());
+                        System.out.println("====>  " + drivingStep.getInstructions());
                     }
                 }
 
