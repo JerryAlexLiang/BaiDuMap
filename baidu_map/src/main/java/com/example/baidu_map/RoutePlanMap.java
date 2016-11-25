@@ -36,6 +36,7 @@ public class RoutePlanMap extends AppCompatActivity implements View.OnClickListe
     private MapView mRouteMap;
     private BaiduMap mBaiDuMap;
     private EditText mEtStart;
+    private EditText mEtEnd;
     private Button mDriverRouteBtn;
     private String mStartPoint;
     private String mEndPoint;
@@ -53,6 +54,7 @@ public class RoutePlanMap extends AppCompatActivity implements View.OnClickListe
     private Button mUP;
     private Button mNext;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,6 +62,7 @@ public class RoutePlanMap extends AppCompatActivity implements View.OnClickListe
         //初始化控件
         mRouteCityName = (EditText) findViewById(R.id.city_name);//起点城市
         mEtStart = (EditText) findViewById(R.id.start_point_name);//起点位置
+        mEtEnd = (EditText) findViewById(R.id.end_point_name);//终点位置
         mDriverRouteBtn = (Button) findViewById(R.id.route_driver_btn);//自驾
         mUP = (Button) findViewById(R.id.route_driver_btn_up);//上一节点
         mNext = (Button) findViewById(R.id.route_driver_btn_next);//下一节点
@@ -91,6 +94,8 @@ public class RoutePlanMap extends AppCompatActivity implements View.OnClickListe
     public void onClick(View view) {
         mCity = mRouteCityName.getText().toString();
         mStartPoint = mEtStart.getText().toString();
+        mEndPoint = mEtEnd.getText().toString();
+
         switch (view.getId()) {
             case R.id.route_driver_btn:
                 mBaiDuMap.clear();//清空所有Marker

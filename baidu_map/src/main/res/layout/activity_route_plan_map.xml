@@ -70,28 +70,34 @@
 
         <Button
             android:id="@+id/route_driver_btn"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:text="驾车" />
 
         <Button
             android:id="@+id/route_walk_btn"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:text="步行" />
 
 
         <Button
             android:id="@+id/route_driver_btn_up"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="上一个节点" />
+            android:layout_weight="1"
+            android:text="up"
+            android:textAllCaps="false"/>
 
         <Button
             android:id="@+id/route_driver_btn_next"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="下一个节点" />
+            android:layout_weight="1"
+            android:text="next"
+            android:textAllCaps="false"/>
 
     </LinearLayout>
 
