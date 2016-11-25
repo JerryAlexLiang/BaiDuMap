@@ -119,8 +119,10 @@ public class BusLineSearchMap extends AppCompatActivity implements View.OnClickL
         switch (view.getId()) {
             case R.id.busLine_search_button:
                 //开始搜索
-                searchInCity(cityName, busLineNum);
+                mBaiDuMap.clear();//清空所有Marker
                 currentStation = -1;
+                searchInCity(cityName, busLineNum);
+//                currentStation = -1;
                 break;
 
             case R.id.busLine_next_page:

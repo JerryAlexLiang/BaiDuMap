@@ -1,11 +1,10 @@
 package com.example.baidu_map;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -17,11 +16,7 @@ import com.baidu.mapapi.map.MapStatusUpdateFactory;
 import com.baidu.mapapi.map.MapView;
 import com.baidu.mapapi.model.LatLng;
 import com.baidu.mapapi.overlayutil.DrivingRouteOverlay;
-import com.baidu.mapapi.overlayutil.TransitRouteOverlay;
-import com.baidu.mapapi.search.core.PlaneInfo;
-import com.baidu.mapapi.search.core.RouteNode;
 import com.baidu.mapapi.search.core.SearchResult;
-import com.baidu.mapapi.search.core.TaxiInfo;
 import com.baidu.mapapi.search.route.BikingRouteResult;
 import com.baidu.mapapi.search.route.DrivingRouteLine;
 import com.baidu.mapapi.search.route.DrivingRoutePlanOption;
@@ -31,7 +26,6 @@ import com.baidu.mapapi.search.route.MassTransitRouteResult;
 import com.baidu.mapapi.search.route.OnGetRoutePlanResultListener;
 import com.baidu.mapapi.search.route.PlanNode;
 import com.baidu.mapapi.search.route.RoutePlanSearch;
-import com.baidu.mapapi.search.route.SuggestAddrInfo;
 import com.baidu.mapapi.search.route.TransitRouteResult;
 import com.baidu.mapapi.search.route.WalkingRouteResult;
 
@@ -42,7 +36,6 @@ public class RoutePlanMap extends AppCompatActivity implements View.OnClickListe
     private MapView mRouteMap;
     private BaiduMap mBaiDuMap;
     private EditText mEtStart;
-    private EditText mEtEnd;
     private Button mDriverRouteBtn;
     private String mStartPoint;
     private String mEndPoint;
@@ -65,10 +58,9 @@ public class RoutePlanMap extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_route_plan_map);
         //初始化控件
-        mRouteCityName = (EditText) findViewById(R.id.city_name);
-        mEtStart = (EditText) findViewById(R.id.start_point_name);
-        mEtEnd = (EditText) findViewById(R.id.end_point_name);
-        mDriverRouteBtn = (Button) findViewById(R.id.route_driver_btn);
+        mRouteCityName = (EditText) findViewById(R.id.city_name);//起点城市
+        mEtStart = (EditText) findViewById(R.id.start_point_name);//起点位置
+        mDriverRouteBtn = (Button) findViewById(R.id.route_driver_btn);//自驾
         mUP = (Button) findViewById(R.id.route_driver_btn_up);//上一节点
         mNext = (Button) findViewById(R.id.route_driver_btn_next);//下一节点
         //初始化mapView
@@ -81,8 +73,7 @@ public class RoutePlanMap extends AppCompatActivity implements View.OnClickListe
         mRoutePlanSearch = RoutePlanSearch.newInstance();
         //监听结果返回接口对象
         mRoutePlanSearch.setOnGetRoutePlanResultListener(this);
-
-        //创建公交路线规划线路覆盖物   实例化覆盖物
+        //创建公交路线规划线路覆盖物,实例化覆盖物
         mDrivingRouteOverlay = new DrivingRouteOverlay(mBaiDuMap);
         //设置点击监听事件
         mDriverRouteBtn.setOnClickListener(this);
@@ -100,8 +91,6 @@ public class RoutePlanMap extends AppCompatActivity implements View.OnClickListe
     public void onClick(View view) {
         mCity = mRouteCityName.getText().toString();
         mStartPoint = mEtStart.getText().toString();
-        mEndPoint = mEtEnd.getText().toString();
-
         switch (view.getId()) {
             case R.id.route_driver_btn:
                 mBaiDuMap.clear();//清空所有Marker
@@ -152,7 +141,6 @@ public class RoutePlanMap extends AppCompatActivity implements View.OnClickListe
      * 上一个节点
      */
     private void up() {
-
     }
 
     /**
@@ -165,9 +153,9 @@ public class RoutePlanMap extends AppCompatActivity implements View.OnClickListe
 
 //        PlanNode startNode = PlanNode.withLocation(new LatLng(33.83145, 115.786992));//万达广场
 //        PlanNode endNode = PlanNode.withLocation(new LatLng(33.894828, 115.779495));//风华中学
-        if (mStartPoint.isEmpty() || mEndPoint.isEmpty() ||mCity.isEmpty()){
+        if (mStartPoint.isEmpty() || mEndPoint.isEmpty() || mCity.isEmpty()) {
             Toast.makeText(RoutePlanMap.this, "请输入查询信息", Toast.LENGTH_SHORT).show();
-        }else {
+        } else {
             DrivingRoutePlanOption drivingRoutePlanOption = new DrivingRoutePlanOption()
                     .from(startNode)
                     .to(endNode);

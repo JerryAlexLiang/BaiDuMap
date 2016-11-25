@@ -26,7 +26,7 @@
         android:id="@+id/end_point"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/start_point"
+        android:layout_toRightOf="@id/start_point_name"
         android:padding="8dp"
         android:text="终点： "
         android:textSize="20sp" />
@@ -44,9 +44,9 @@
         android:id="@+id/city"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@id/end_point_name"
-        android:layout_toRightOf="@id/end_point_name"
-        android:text="城市:"
+        android:layout_below="@id/start_point"
+        android:padding="8dp"
+        android:text="起始城市:"
         android:textSize="20sp" />
 
     <EditText
@@ -54,15 +54,18 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@id/city"
+        android:layout_below="@id/start_point_name"
         android:layout_toRightOf="@id/city"
         android:background="@android:drawable/editbox_background_normal"
         android:hint="亳州" />
+
+
 
     <LinearLayout
         android:id="@+id/button_ll"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/end_point"
+        android:layout_below="@id/city"
         android:orientation="horizontal">
 
         <Button
@@ -70,6 +73,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="驾车" />
+
+        <Button
+            android:id="@+id/route_walk_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="步行" />
+
 
         <Button
             android:id="@+id/route_driver_btn_up"
