@@ -99,7 +99,7 @@ public class RoutePlanMap extends AppCompatActivity implements View.OnClickListe
         switch (view.getId()) {
             case R.id.route_driver_btn:
                 mBaiDuMap.clear();//清空所有Marker
-                currentStep = -1;
+//                currentStep = -1;
                 driver();
 
             case R.id.route_driver_btn_up:
@@ -122,11 +122,15 @@ public class RoutePlanMap extends AppCompatActivity implements View.OnClickListe
      */
     private void next() {
         if (allStep != null) {
-            if (currentStep == allStep.size() - 1) {
+            if (currentStep == -1) {
+                Toast.makeText(RoutePlanMap.this, "始发站", Toast.LENGTH_SHORT).show();
+
+            }
+            if (currentStep == allStep.size()-1) {
                 Toast.makeText(RoutePlanMap.this, "已到达目标地点", Toast.LENGTH_SHORT).show();
             } else {
-                DrivingRouteLine.DrivingStep drivingStep = allStep.get(currentStep + 1);
-//                LatLng location = drivingStep.getEntrance().getLocation();
+                currentStep++;
+                DrivingRouteLine.DrivingStep drivingStep = allStep.get(currentStep);
                 LatLng location = drivingStep.getExit().getLocation();
                 TextView popupTextView = new TextView(this);
                 popupTextView.setBackgroundResource(R.drawable.popup);
@@ -135,7 +139,7 @@ public class RoutePlanMap extends AppCompatActivity implements View.OnClickListe
                 //mDrivingRouteOverlay.zoomToSpan();//自动缩放地图
                 //移动节点至中心
                 mBaiDuMap.setMapStatus(MapStatusUpdateFactory.newLatLng(location));
-                currentStep++;
+
             }
 
         }
@@ -146,6 +150,25 @@ public class RoutePlanMap extends AppCompatActivity implements View.OnClickListe
      * 上一个节点
      */
     private void up() {
+        if (allStep != null) {
+            if (currentStep == allStep.size()) {
+                Toast.makeText(RoutePlanMap.this, "已到达终点站", Toast.LENGTH_SHORT).show();
+            }
+            if (currentStep == 0) {
+                Toast.makeText(RoutePlanMap.this, "始发站", Toast.LENGTH_SHORT).show();
+            }else {
+                currentStep--;
+                DrivingRouteLine.DrivingStep drivingStep = allStep.get(currentStep);
+                LatLng location = drivingStep.getExit().getLocation();
+                TextView popupTextView = new TextView(this);
+                popupTextView.setBackgroundResource(R.drawable.popup);
+                popupTextView.setText(drivingStep.getInstructions());
+                mBaiDuMap.showInfoWindow(new InfoWindow(popupTextView, location, 0));
+                //移动节点至中心
+                mBaiDuMap.setMapStatus(MapStatusUpdateFactory.newLatLng(location));
+            }
+        }
+
     }
 
     /**

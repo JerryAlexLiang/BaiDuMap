@@ -76,11 +76,11 @@
             android:text="驾车" />
 
         <Button
-            android:id="@+id/route_walk_btn"
+            android:id="@+id/route_bus_btn"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="步行" />
+            android:text="公交" />
 
 
         <Button
