@@ -14,4 +14,5 @@
     <string name="nearby_search">附近搜索</string>
     <string name="busLine_search">公交路线查询</string>
     <string name="route_plan">路线规划</string>
+    <string name="location">定位</string>
 </resources>

@@ -21,7 +21,7 @@
         android:theme="@style/AppTheme">
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
-            android:value="0cDiMLQTOBwKg4DRGwg8o2McVp4Ay1tm" />
+            android:value="net9DvCbyZjEGOGLbOoSduBSMWlSufDx" />
 
         <activity android:name=".MainActivity">
             <intent-filter>
@@ -42,7 +42,8 @@
         <activity android:name=".RangeSearchMap" />
         <activity android:name=".NearbySearchMap" />
         <activity android:name=".BusLineSearchMap" />
-        <activity android:name=".RoutePlanMap"></activity>
+        <activity android:name=".RoutePlanMap" />
+        <activity android:name=".LocationMap"></activity>
     </application>
 
 </manifest>
