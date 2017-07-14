@@ -1,45 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     tools:context="com.example.baidu_map.LocationMap">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="当前位置信息"
-        android:textSize="26sp"
-        android:textColor="#ff0000"
-        android:gravity="center_horizontal"
-        android:layout_marginTop="80dp"/>
+    <!--一个百度地图控件，加一个手动点击实现定位的按钮，放在一个相对布局里面-->
 
-    <TextView
-        android:id="@+id/country_tv"
+    <com.baidu.mapapi.map.MapView
+        android:id="@+id/bmapView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="country"
-        android:layout_marginTop="20dp"
-        android:textSize="22sp"
-        android:gravity="center_horizontal"/>
+        android:layout_height="match_parent"
+        android:clickable="true" />
 
-    <TextView
-        android:id="@+id/city_tv"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="city"
+    <Button
+        android:id="@+id/request"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginRight="10dp"
         android:layout_marginTop="10dp"
-        android:textSize="22sp"
-        android:gravity="center_horizontal"/>
-
-    <TextView
-        android:id="@+id/address_tv"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="address"
-        android:layout_marginTop="10dp"
-        android:textSize="22sp"
-        android:gravity="center_horizontal"/>
-
-</LinearLayout>
+        android:background="@drawable/custom_loc" />
+</RelativeLayout>
