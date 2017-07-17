@@ -1,1 +1,1 @@
-include ':app', ':baidu_map'
+include ':app', ':baidu_map', ':panoramamapview'

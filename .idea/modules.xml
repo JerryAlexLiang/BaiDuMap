@@ -5,6 +5,7 @@
       <module fileurl="file://$PROJECT_DIR$/BaiDuMap.iml" filepath="$PROJECT_DIR$/BaiDuMap.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/baidu_map/baidu_map.iml" filepath="$PROJECT_DIR$/baidu_map/baidu_map.iml" />
+      <module fileurl="file://$PROJECT_DIR$/panoramamapview/panoramamapview.iml" filepath="$PROJECT_DIR$/panoramamapview/panoramamapview.iml" />
     </modules>
   </component>
 </project>
