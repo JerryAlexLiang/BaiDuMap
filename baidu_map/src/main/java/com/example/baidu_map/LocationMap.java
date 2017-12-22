@@ -216,7 +216,12 @@ public class LocationMap extends AppCompatActivity implements View.OnClickListen
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        //注意：在活动被销毁的时候，一定要调用LocationClient的stop方法来停止定位，
+        // 不然程序将在后台不停地进行定位，从而严重的消耗手机的电量。
+        mLocationClient.stop();
         mMapView.onDestroy();
+        //关闭地图图层定位
+        mBaiduMap.setMyLocationEnabled(false);
     }
 
     /**
